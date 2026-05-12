@@ -11,5 +11,31 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  zipkin:
+    base-url: http://localhost:9411
+    enabled: true
 server:
   port: 8181
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+        exclude: beans
+  endpoint:
+    health:
+      show-details: always
+      env:
+        show-values: when_authorized
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  tracing:
+    sampling:
+      probability: 1.0
+
+logging:
+  pattern:
+    level: "%5p [traceId=%X{traceId}, spanId=%X{spanId}]"
